@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOT API Client - Browser Example</title>
+</head>
+<body>
+  <h1>Bank of Thailand API Client</h1>
+  
+  <div>
+    <label for="token">API Token:</label>
+    <input type="text" id="token" placeholder="Enter your API token">
+    <button onclick="fetchRates()">Fetch Exchange Rates</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.skypack.dev/@bot-api/client';
+
+    window.fetchRates = async function() {
+      const token = document.getElementById('token').value;
+      const resultsDiv = document.getElementById('results');
+
+      if (!token) {
+        resultsDiv.innerHTML = '<p style="color: red;">Please enter an API token</p>';
+        return;
+      }
+
+      try {
+        resultsDiv.innerHTML = '<p>Loading...</p>';
+
+        const client = createClient({
+          apiToken: token,
+        });
+
+        const rates = await client.exchangeRate.daily({
+          startPeriod: '2025-01-01',
+          endPeriod: '2025-01-31',
+        });
+
+        resultsDiv.innerHTML = `
+          <h2>Results</h2>
+          <ul>
+            <li>Data points: ${rates.length}</li>
+            <li>Average rate: ${rates.average('rate')?.toFixed(4)}</li>
+            <li>Min rate: ${rates.min('rate')}</li>
+            <li>Max rate: ${rates.max('rate')}</li>
+            <li>Trend: ${rates.trend('rate')}</li>
+          </ul>
+          <button onclick="downloadCSV()">Download CSV</button>
+        `;
+
+        // Store for CSV download
+        window.currentRates = rates;
+
+      } catch (error) {
+        resultsDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+      }
+    };
+
+    window.downloadCSV = async function() {
+      if (window.currentRates) {
+        await window.currentRates.saveCSV('exchange-rates.csv');
+      }
+    };
+  </script>
+</body>
+</html>
