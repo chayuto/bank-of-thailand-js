@@ -35,17 +35,12 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "README.md", "CHANGELOG.md", "LICENSE"],
   "engines": {
     "node": ">=20.0.0",
     "bun": ">=1.3.0"
   },
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "bun@1.3.0",
   "scripts": {
     "build": "tsup",
     "build:check": "publint && attw --pack",
@@ -59,12 +54,12 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
     "dev": "tsup --watch",
-    "prepublishOnly": "pnpm run build && pnpm run test && pnpm run lint && pnpm run build:check",
+    "prepublishOnly": "bun run build && bun test && bun run lint && bun run build:check",
     "docs": "typedoc",
     "docs:dev": "vitepress dev docs",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm run build && changeset publish"
+    "release": "bun run build && changeset publish"
   },
   "dependencies": {},
   "devDependencies": {
@@ -84,12 +79,10 @@
     "vitest": "^2.1.8"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "bun lint-staged"
   },
   "lint-staged": {
-    "*.{ts,js,json}": [
-      "biome check --write"
-    ]
+    "*.{ts,js,json}": ["biome check --write"]
   },
   "trustedDependencies": []
 }

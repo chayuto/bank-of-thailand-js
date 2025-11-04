@@ -24,7 +24,7 @@ export class NotFoundError extends RequestError {}
 export class RateLimitError extends RequestError {
   public retryAfter: number;
 
-  constructor(message: string, response?: Response, retryAfter: number = 60) {
+  constructor(message: string, response?: Response, retryAfter = 60) {
     super(message, response);
     this.retryAfter = retryAfter;
   }

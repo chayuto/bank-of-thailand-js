@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface AverageExchangeRateParams {
   startPeriod: string;
@@ -7,8 +7,7 @@ export interface AverageExchangeRateParams {
 }
 
 export class AverageExchangeRate extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-AverageExchangeRate/v2';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-AverageExchangeRate/v2';
 
   /**
    * Get daily average exchange rate THB to foreign currency

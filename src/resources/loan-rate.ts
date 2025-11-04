@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface LoanRateParams {
   startPeriod: string;
@@ -7,8 +7,7 @@ export interface LoanRateParams {
 }
 
 export class LoanRate extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-LoanInterestRates/v2';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-LoanInterestRates/v2';
 
   /**
    * Get loan interest rates of commercial banks

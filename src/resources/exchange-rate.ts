@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface ExchangeRateParams {
   startPeriod: string;
@@ -7,8 +7,7 @@ export interface ExchangeRateParams {
 }
 
 export class ExchangeRate extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-ReferenceRate/v2';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-ReferenceRate/v2';
 
   /**
    * Get daily weighted-average interbank exchange rate

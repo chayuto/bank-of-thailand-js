@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface DepositRateParams {
   startPeriod: string;
@@ -7,8 +7,7 @@ export interface DepositRateParams {
 }
 
 export class DepositRate extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-DepositInterestRates/v2';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-DepositInterestRates/v2';
 
   /**
    * Get deposit interest rates for individuals of commercial banks

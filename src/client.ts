@@ -7,7 +7,6 @@ import {
   RequestError,
   ServerError,
 } from './errors';
-import { BotApiResponse } from './response';
 import { AverageExchangeRate } from './resources/average-exchange-rate';
 import { DebtSecurities } from './resources/debt-securities';
 import { DepositRate } from './resources/deposit-rate';
@@ -19,6 +18,7 @@ import { LicenseCheck } from './resources/license-check';
 import { LoanRate } from './resources/loan-rate';
 import { SearchSeries } from './resources/search-series';
 import { SwapPoint } from './resources/swap-point';
+import { BotApiResponse } from './response';
 
 export class BotApiClient {
   private config: Configuration;
@@ -115,13 +115,13 @@ export class BotApiClient {
     return this._searchSeries;
   }
 
-  async get<T = any>(path: string, params?: Record<string, any>): Promise<T> {
+  async get<T = BotApiResponse>(path: string, params?: Record<string, unknown>): Promise<T> {
     return this.request<T>('GET', path, { params });
   }
 
-  async post<T = any>(
+  async post<T = BotApiResponse>(
     path: string,
-    options?: { body?: any; params?: Record<string, any> },
+    options?: { body?: unknown; params?: Record<string, unknown> },
   ): Promise<T> {
     return this.request<T>('POST', path, options);
   }
@@ -129,7 +129,7 @@ export class BotApiClient {
   private async request<T>(
     method: string,
     path: string,
-    options?: { body?: any; params?: Record<string, any> },
+    options?: { body?: unknown; params?: Record<string, unknown> },
   ): Promise<T> {
     const url = this.buildUrl(path, options?.params);
     const controller = new AbortController();
@@ -154,7 +154,7 @@ export class BotApiClient {
     }
   }
 
-  private buildUrl(path: string, params?: Record<string, any>): string {
+  private buildUrl(path: string, params?: Record<string, unknown>): string {
     const baseUrl = path.startsWith('http') ? '' : this.config.baseUrl;
     const url = new URL(path, baseUrl || undefined);
 
@@ -177,10 +177,7 @@ export class BotApiClient {
 
     switch (response.status) {
       case 401:
-        throw new AuthenticationError(
-          'Authentication failed. Check your API token.',
-          response,
-        );
+        throw new AuthenticationError('Authentication failed. Check your API token.', response);
       case 403:
         throw new AuthenticationError(
           'Access forbidden. Your token may not have permission for this resource.',
@@ -202,14 +199,14 @@ export class BotApiClient {
     }
   }
 
-  private handleError(error: any): Error {
-    if (error.name === 'AbortError') {
+  private handleError(error: unknown): Error {
+    if (error instanceof Error && error.name === 'AbortError') {
       return new RequestError('Request timeout');
     }
     if (error instanceof TypeError && error.message.includes('fetch')) {
       return new RequestError(`Connection failed: ${error.message}`);
     }
-    return error;
+    return error instanceof Error ? error : new Error(String(error));
   }
 }
 

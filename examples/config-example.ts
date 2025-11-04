@@ -1,6 +1,6 @@
 /**
  * Environment Configuration Example
- * 
+ *
  * This example shows best practices for loading environment variables
  * in different runtime environments.
  */
@@ -15,16 +15,18 @@ function loadBasicConfig() {
   if (!process.env.BOT_API_TOKEN) {
     throw new Error(
       'BOT_API_TOKEN is required. Please set it in your .env file:\n' +
-      '  BOT_API_TOKEN=your_token_here\n\n' +
-      'Get your token from: https://portal.api.bot.or.th'
+        '  BOT_API_TOKEN=your_token_here\n\n' +
+        'Get your token from: https://portal.api.bot.or.th',
     );
   }
 
   return createClient({
     apiToken: process.env.BOT_API_TOKEN,
     baseUrl: process.env.BOT_BASE_URL,
-    timeout: process.env.BOT_TIMEOUT ? parseInt(process.env.BOT_TIMEOUT) : undefined,
-    maxRetries: process.env.BOT_MAX_RETRIES ? parseInt(process.env.BOT_MAX_RETRIES) : undefined,
+    timeout: process.env.BOT_TIMEOUT ? Number.parseInt(process.env.BOT_TIMEOUT) : undefined,
+    maxRetries: process.env.BOT_MAX_RETRIES
+      ? Number.parseInt(process.env.BOT_MAX_RETRIES)
+      : undefined,
   });
 }
 
@@ -47,9 +49,9 @@ function getOptionalEnv(name: string, defaultValue?: string): string | undefined
 function getNumberEnv(name: string, defaultValue?: number): number | undefined {
   const value = process.env[name];
   if (!value) return defaultValue;
-  
-  const num = parseInt(value, 10);
-  if (isNaN(num)) {
+
+  const num = Number.parseInt(value, 10);
+  if (Number.isNaN(num)) {
     throw new Error(`Environment variable ${name} must be a number, got: ${value}`);
   }
   return num;
@@ -79,8 +81,8 @@ function validateConfig(): AppConfig {
   const config: AppConfig = {
     botApiToken: getRequiredEnv('BOT_API_TOKEN'),
     botBaseUrl: getOptionalEnv('BOT_BASE_URL'),
-    botTimeout: getNumberEnv('BOT_TIMEOUT', 30000)!,
-    botMaxRetries: getNumberEnv('BOT_MAX_RETRIES', 3)!,
+    botTimeout: getNumberEnv('BOT_TIMEOUT', 30000) ?? 30000,
+    botMaxRetries: getNumberEnv('BOT_MAX_RETRIES', 3) ?? 3,
   };
 
   // Additional validation
@@ -126,8 +128,8 @@ function loadEnvironmentConfig() {
   // Different timeouts for different environments
   const timeouts = {
     development: 60000, // 60s for debugging
-    staging: 30000,     // 30s
-    production: 10000,  // 10s for production
+    staging: 30000, // 30s
+    production: 10000, // 10s for production
   };
 
   return createClient({
@@ -147,7 +149,7 @@ async function main() {
   // Example 1: Basic
   console.log('1. Basic configuration:');
   try {
-    const client1 = loadBasicConfig();
+    loadBasicConfig();
     console.log('✓ Client created successfully');
   } catch (error) {
     console.error('✗ Error:', (error as Error).message);
@@ -156,7 +158,7 @@ async function main() {
   // Example 2: With helpers
   console.log('\n2. Configuration with helpers:');
   try {
-    const client2 = loadConfigWithHelpers();
+    loadConfigWithHelpers();
     console.log('✓ Client created with validated config');
   } catch (error) {
     console.error('✗ Error:', (error as Error).message);
@@ -165,7 +167,7 @@ async function main() {
   // Example 3: Type-safe
   console.log('\n3. Type-safe configuration:');
   try {
-    const client3 = loadTypeSafeConfig();
+    loadTypeSafeConfig();
     console.log('✓ Client created with type-safe config');
   } catch (error) {
     console.error('✗ Error:', (error as Error).message);
@@ -175,7 +177,7 @@ async function main() {
   console.log('\n4. Environment-specific configuration:');
   console.log('   Current environment:', process.env.NODE_ENV || 'development');
   try {
-    const client4 = loadEnvironmentConfig();
+    loadEnvironmentConfig();
     console.log('✓ Client created with environment config');
   } catch (error) {
     console.error('✗ Error:', (error as Error).message);

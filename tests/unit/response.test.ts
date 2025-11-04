@@ -34,8 +34,10 @@ describe('BotApiResponse', () => {
     test('calculates change', () => {
       const change = response.change('value');
       expect(change).not.toBeNull();
-      expect(change!.absolute).toBeCloseTo(0.05, 2);
-      expect(change!.percentage).toBeCloseTo(0.149, 2);
+      if (change) {
+        expect(change.absolute).toBeCloseTo(0.05, 2);
+        expect(change.percentage).toBeCloseTo(0.149, 2);
+      }
     });
 
     test('returns first and last items', () => {
@@ -102,8 +104,10 @@ describe('BotApiResponse', () => {
       const range = response.dateRange();
 
       expect(range).not.toBeNull();
-      expect(range![0]).toBe('2025-01-01');
-      expect(range![1]).toBe('2025-01-05');
+      if (range) {
+        expect(range[0]).toBe('2025-01-01');
+        expect(range[1]).toBe('2025-01-05');
+      }
     });
 
     test('calculates period days', () => {

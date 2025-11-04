@@ -1,13 +1,12 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface LicenseCheckParams {
   taxId: string;
 }
 
 export class LicenseCheck extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/BOTLicenseCheckAPI/v1';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/BOTLicenseCheckAPI/v1';
 
   /**
    * Check BOT license status

@@ -1,4 +1,5 @@
 import type { BotApiClient } from './client';
+import type { BotApiResponse } from './response';
 
 export abstract class Resource {
   protected client: BotApiClient;
@@ -7,13 +8,16 @@ export abstract class Resource {
     this.client = client;
   }
 
-  protected async get<T = any>(path: string, params?: Record<string, any>): Promise<T> {
+  protected async get<T = BotApiResponse>(
+    path: string,
+    params?: Record<string, unknown>,
+  ): Promise<T> {
     return this.client.get<T>(path, params);
   }
 
-  protected async post<T = any>(
+  protected async post<T = BotApiResponse>(
     path: string,
-    options?: { body?: any; params?: Record<string, any> },
+    options?: { body?: unknown; params?: Record<string, unknown> },
   ): Promise<T> {
     return this.client.post<T>(path, options);
   }

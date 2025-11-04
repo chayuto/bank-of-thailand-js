@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface ImpliedRateParams {
   startPeriod: string;
@@ -7,8 +7,7 @@ export interface ImpliedRateParams {
 }
 
 export class ImpliedRate extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-ImpliedInterestRates/v2';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-ImpliedInterestRates/v2';
 
   /**
    * Get Thai Baht implied interest rates (percent per annum)

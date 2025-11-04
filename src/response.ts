@@ -14,8 +14,10 @@ export interface ChangeResult {
   lastValue: number;
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: Response data structure is dynamic and determined by API
 export class BotApiResponse<T = any> {
   public raw: T;
+  // biome-ignore lint/suspicious/noExplicitAny: Data array contains dynamic API response objects
   public data: any[];
 
   constructor(rawResponse: T) {
@@ -27,10 +29,12 @@ export class BotApiResponse<T = any> {
     return this.data.length;
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: Return type depends on API response structure
   first(): any {
     return this.data[0];
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: Return type depends on API response structure
   last(): any {
     return this.data[this.data.length - 1];
   }
@@ -118,7 +122,7 @@ export class BotApiResponse<T = any> {
     return missing;
   }
 
-  change(column: string = 'value'): ChangeResult | null {
+  change(column = 'value'): ChangeResult | null {
     const values = this.valuesFor(column);
     if (values.length < 2) return null;
 
@@ -135,7 +139,7 @@ export class BotApiResponse<T = any> {
     };
   }
 
-  dailyChanges(column: string = 'value'): Array<{ absolute: number; percentage: number }> {
+  dailyChanges(column = 'value'): Array<{ absolute: number; percentage: number }> {
     const values = this.valuesFor(column);
     if (values.length < 2) return [];
 
@@ -156,18 +160,17 @@ export class BotApiResponse<T = any> {
     return changes;
   }
 
-  volatility(column: string = 'value'): number {
+  volatility(column = 'value'): number {
     const changes = this.dailyChanges(column).map((c) => c.percentage);
     if (changes.length === 0) return 0;
 
     const mean = changes.reduce((acc, val) => acc + val, 0) / changes.length;
-    const variance =
-      changes.reduce((acc, val) => acc + (val - mean) ** 2, 0) / changes.length;
+    const variance = changes.reduce((acc, val) => acc + (val - mean) ** 2, 0) / changes.length;
 
     return Number.parseFloat(Math.sqrt(variance).toFixed(4));
   }
 
-  trend(column: string = 'value'): 'up' | 'down' | 'flat' {
+  trend(column = 'value'): 'up' | 'down' | 'flat' {
     const changeData = this.change(column);
     if (!changeData) return 'flat';
 
@@ -209,6 +212,7 @@ export class BotApiResponse<T = any> {
     }
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: Extracts data from dynamic API response structure
   private extractData(response: any): any[] {
     if (Array.isArray(response)) return response;
     if (typeof response !== 'object' || response === null) return [];
@@ -235,17 +239,23 @@ export class BotApiResponse<T = any> {
   private extractHeaders(): string[] {
     if (this.data.length === 0) return [];
 
-    const first = this.data[0];
-    if (typeof first === 'object' && first !== null) {
-      return Object.keys(first);
-    }
-    if (Array.isArray(first)) {
-      return first.map((_, i) => `column_${i + 1}`);
-    }
-    return ['value'];
+    const firstRow = this.data[0];
+    if (typeof firstRow !== 'object' || firstRow === null) return [];
+
+    return Object.keys(firstRow);
   }
 
-  private extractRows(): any[][] {
+  private generateCsvContent(): string {
+    const headers = this.extractHeaders();
+    const rows = this.extractRows();
+
+    const headerRow = headers.map((h) => this.escapeCsvCell(h)).join(',');
+    const dataRows = rows.map((row) => row.map((cell) => this.escapeCsvCell(cell)).join(','));
+
+    return [headerRow, ...dataRows].join('\n');
+  }
+
+  private extractRows(): unknown[][] {
     return this.data.map((row) => {
       if (typeof row === 'object' && row !== null && !Array.isArray(row)) {
         return Object.values(row);
@@ -257,7 +267,7 @@ export class BotApiResponse<T = any> {
     });
   }
 
-  private escapeCsvCell(cell: any): string {
+  private escapeCsvCell(cell: unknown): string {
     const str = String(cell ?? '');
     if (str.includes(',') || str.includes('"') || str.includes('\n')) {
       return `"${str.replace(/"/g, '""')}"`;

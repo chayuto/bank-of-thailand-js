@@ -1,5 +1,5 @@
-import type { BotApiResponse } from '../response';
 import { Resource } from '../resource';
+import type { BotApiResponse } from '../response';
 
 export interface SearchSeriesParams {
   keyword?: string;
@@ -7,8 +7,7 @@ export interface SearchSeriesParams {
 }
 
 export class SearchSeries extends Resource {
-  private static readonly BASE_URL =
-    'https://gateway.api.bot.or.th/Stat-SearchSeries/v1';
+  private static readonly BASE_URL = 'https://gateway.api.bot.or.th/Stat-SearchSeries/v1';
 
   /**
    * Search for data series

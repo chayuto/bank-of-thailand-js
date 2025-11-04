@@ -8,7 +8,7 @@ import { createClient } from '../src';
 if (!process.env.BOT_API_TOKEN) {
   throw new Error(
     'BOT_API_TOKEN environment variable is required. ' +
-    'Create a .env file with: BOT_API_TOKEN=your_token_here'
+      'Create a .env file with: BOT_API_TOKEN=your_token_here',
   );
 }
 
