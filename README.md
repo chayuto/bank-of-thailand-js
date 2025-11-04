@@ -2,8 +2,8 @@
 
 > TypeScript/JavaScript client for Bank of Thailand API - Works with Node.js, Bun, and browsers
 
-[![NPM Version](https://img.shields.io/npm/v/bank-of-thailand-js)](https://www.npmjs.com/package/bank-of-thailand-js)
-[![License](https://img.shields.io/npm/l/bank-of-thailand-js)](https://github.com/chayuto/bank-of-thailand-js/blob/main/LICENSE)
+[![NPM Version](https://img.shields.io/npm/v/bank-of-thailand)](https://www.npmjs.com/package/bank-of-thailand)
+[![License](https://img.shields.io/npm/l/bank-of-thailand)](https://github.com/chayuto/bank-of-thailand-js/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
 
 Modern, type-safe client for the Bank of Thailand API with built-in analytics, CSV export, and universal runtime support (Node.js 20+, Bun 1.3+, browsers).
@@ -22,16 +22,16 @@ Modern, type-safe client for the Bank of Thailand API with built-in analytics, C
 
 ```bash
 # npm
-npm install bank-of-thailand-js
+npm install bank-of-thailand
 
 # pnpm (recommended)
-pnpm add bank-of-thailand-js
+pnpm add bank-of-thailand
 
 # yarn
-yarn add bank-of-thailand-js
+yarn add bank-of-thailand
 
 # bun
-bun add bank-of-thailand-js
+bun add bank-of-thailand
 ```
 
 ## Quick Start
@@ -67,7 +67,7 @@ node --env-file=.env your-script.js
 ### 3. Use the Client
 
 ```typescript
-import { createClient } from 'bank-of-thailand-js';
+import { createClient } from 'bank-of-thailand';
 
 // Bun: .env automatically loaded
 // Node.js: Make sure to import 'dotenv/config' first
@@ -156,7 +156,7 @@ import {
   AuthenticationError,
   RateLimitError,
   NotFoundError 
-} from 'bank-of-thailand-js';
+} from 'bank-of-thailand';
 
 try {
   const rates = await client.exchangeRate.daily({ ... });
@@ -221,7 +221,7 @@ MIT
 
 - [BOT API Portal](https://portal.api.bot.or.th)
 - [Documentation](https://github.com/chayuto/bank-of-thailand-js)
-- [npm Package](https://www.npmjs.com/package/bank-of-thailand-js)
+- [npm Package](https://www.npmjs.com/package/bank-of-thailand)
 
 ---
 
