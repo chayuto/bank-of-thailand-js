@@ -16,7 +16,7 @@
   "author": "Chayut",
   "repository": {
     "type": "git",
-    "url": "https://github.com/chayut/bank-of-thailand-js"
+    "url": "git+https://github.com/chayut/bank-of-thailand-js.git"
   },
   "homepage": "https://github.com/chayut/bank-of-thailand-js#readme",
   "bugs": {
@@ -28,7 +28,10 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": {
+        "import": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      },
       "bun": "./dist/index.js",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
